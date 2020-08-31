@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Sabrina Green",
+    "username": "sgreen",
+    "phone": "802-867-5309",
+    "department": "IT Infrastructure",
+    "role": "System Administrator"
+  },
+  {
+    "name": "Eli Jones",
+    "username": "ejones",
+    "phone": "684-3481127",
+    "department": "IT Infrastructure",
+    "role": "IT specialist"
+  }
+]

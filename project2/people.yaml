@@ -1,0 +1,10 @@
+- department: IT Infrastructure
+  name: Sabrina Green
+  phone: 802-867-5309
+  role: System Administrator
+  username: sgreen
+- department: IT Infrastructure
+  name: Eli Jones
+  phone: 684-3481127
+  role: IT specialist
+  username: ejones
