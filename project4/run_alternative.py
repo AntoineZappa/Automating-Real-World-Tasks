@@ -1,38 +1,55 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
-import os
-import glob
+import os, glob, json
 import requests
 
-user = os.getenv('USER')
-text_files = glob.glob(
-    "/home/{}/supplier-data/descriptions/*.txt".format(user))
-keys = ["name", "weight", "description", "image_name"]
-feed_list = []
+# dictionary iteration key + txt line file reading
+def push_data(descriptions_folder):
+    '''Returns a list of dictionaries containing the name, weight, description
+    and the image_name, and push the result data to the localhost'''
 
-# parsing through the text files
-for files in text_files:
-    with open(files, 'r', encoding='utf-8') as f:
-        dict = {}
-        reader = f.read().split("\n")
-        for i in range(3):
-            # append values to the dictionary
-            dict.update({keys[i]: reader[i]})
+    keys = ["name", "weight", "description", "image_name"]
+    fruits = []
 
-        files = os.path.basename(files)
-        img = files.replace(".txt", ".jpeg")
-        dict.update({keys[3]: img})  # appending the image files
+    # iterating over text files
+    for file in glob.glob(descriptions_folder + '*.txt'):
+        with open(file, 'r', encoding='utf-8') as infile:
+            count = 0
+            fdict = {}
+            for line in infile:
+                value = line.strip().replace(' lbs', '')
+                fdict.update({keys[count]: value})
+                count += 1
 
-        feed_list.append(dict)  # creating a list of dictionary
-# convert the weight value to integer
-for keys in feed_list:
-    i = keys["weight"][:3]
-    keys["weight"] = i
-for keys in feed_list:
-    keys["weight"] = int(keys["weight"])
 
-# feed data to the website
-url = "http://localhost/fruits/"
-for i in range(len(feed_list)):
-    response = requests.post(url, json=feed_list[i])
-    response.raise_for_status()
+            # changing and appending filename
+            filename = os.path.basename(file)
+            img = filename.replace(".txt",".jpeg")
+            fdict.update({keys[3]: img})
+
+        # closing file
+        infile.close()
+        # creating json file
+        fruits.append(fdict)
+
+    # create the integer
+    # for keys in fruits:
+    #     i = keys['weight'].replace(' lbs','')
+    #     keys["weight"] = i
+    #     keys["weight"] = int(keys["weight"])
+
+    print(fruits)
+
+    #pushing data to the server
+    # for i in range(len(fruits)):
+    #     response =  requests.post(url, json=fruits[i])
+    #     response.raise_for_status()
+    return 0
+
+
+if __name__=='__main__':
+    url = 'http://localhost/fruits/'
+    user = os.getenv('USER')
+    # descriptions_folder = '/home/{}/supplier-data/descriptions/'.format(user)
+    descriptions_folder = '/Users/{}/PycharmProjects/Google IT Automation with Python/Automating Real-World Tasks/project4/supplier-data/descriptions/'.format(user) #mac
+    push_data(descriptions_folder)
