@@ -21,35 +21,37 @@ def push_data(descriptions_folder):
                 fdict.update({keys[count]: value})
                 count += 1
 
-
             # changing and appending filename
             filename = os.path.basename(file)
             img = filename.replace(".txt",".jpeg")
+
+            for k, v in fdict.items():
+                if k=='weight':
+                    v=int(v)
+                print(type(v))
             fdict.update({keys[3]: img})
 
-        # closing file
-        infile.close()
         # creating json file
         fruits.append(fdict)
 
     # create the integer
-    # for keys in fruits:
-    #     i = keys['weight'].replace(' lbs','')
-    #     keys["weight"] = i
-    #     keys["weight"] = int(keys["weight"])
+    for keys in fruits:
+        i = keys['weight'].replace(' lbs','')
+        keys["weight"] = i
+        keys["weight"] = int(keys["weight"])
 
     print(fruits)
 
     #pushing data to the server
-    # for i in range(len(fruits)):
-    #     response =  requests.post(url, json=fruits[i])
-    #     response.raise_for_status()
+    for i in range(len(fruits)):
+        response =  requests.post(url, json=fruits[i])
+        response.raise_for_status()
     return 0
 
 
 if __name__=='__main__':
     url = 'http://localhost/fruits/'
     user = os.getenv('USER')
-    # descriptions_folder = '/home/{}/supplier-data/descriptions/'.format(user)
-    descriptions_folder = '/Users/{}/PycharmProjects/Google IT Automation with Python/Automating Real-World Tasks/project4/supplier-data/descriptions/'.format(user) #mac
+    descriptions_folder = '/home/{}/supplier-data/descriptions/'.format(user)
+    # descriptions_folder = '/Users/{}/PycharmProjects/Google IT Automation with Python/Automating Real-World Tasks/project4/supplier-data/descriptions/'.format(user) #mac
     push_data(descriptions_folder)

@@ -25,8 +25,6 @@ def push_data(url, descriptions_folder):
             img = filename.replace(".txt",".jpeg")
             fdict.update({keys[3]: img})
 
-        # closing file
-        infile.close()
         # creating json file
         fruits.append(fdict)
 
